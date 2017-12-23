@@ -38,8 +38,8 @@ public class LogFile2CaseBase {
 			
 			input = Line.split(",");
 			
-			mcinput.add(new AtomicInput("x",new Feature(Double.parseDouble(input[0])),Atomic_strat));
-			mcinput.add(new AtomicInput("y",new Feature(Double.parseDouble(input[0])),Atomic_strat));
+			mcinput.add(new AtomicInput("position",new Feature(Double.parseDouble(input[0])),Atomic_strat));
+			mcinput.add(new AtomicInput("velocity",new Feature(Double.parseDouble(input[0])),Atomic_strat));
 			action = new MCAction(input[2]);
 			
 			cb.createThenAdd(mcinput, action, stateBasedSim);	
