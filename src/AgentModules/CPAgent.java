@@ -8,9 +8,9 @@ import org.jLOAF.action.Action;
 import org.jLOAF.casebase.CaseBase;
 import org.jLOAF.inputs.Input;
 
-public class MCAgent extends Agent {
+public class CPAgent extends Agent {
 
-	public MCAgent() {
+	public CPAgent() {
 		super(null, null, null, null);
 		
 	}

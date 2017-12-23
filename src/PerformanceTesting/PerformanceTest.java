@@ -5,7 +5,7 @@ import java.io.IOException;
 import org.jLOAF.Agent;
 import org.jLOAF.performance.PerformanceEvaluator;
 
-import AgentModules.MCAgent;
+import AgentModules.CPAgent;
 import CaseBaseCreation.LogFile2CaseBase;
 
 public class PerformanceTest extends PerformanceEvaluator {
@@ -38,7 +38,7 @@ public class PerformanceTest extends PerformanceEvaluator {
 
 	@Override
 	public Agent createAgent() {
-		MCAgent agent = new MCAgent();
+		CPAgent agent = new CPAgent();
 		return agent;
 	}
 

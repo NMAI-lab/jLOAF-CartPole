@@ -2,11 +2,11 @@ package AgentModules;
 
 import org.jLOAF.action.AtomicAction;
 
-public class MCAction extends AtomicAction {
+public class CPAction extends AtomicAction {
 
 	private static final long serialVersionUID = 1L;
 
-	public MCAction(String name) {
+	public CPAction(String name) {
 		super(name);
 	}
 }

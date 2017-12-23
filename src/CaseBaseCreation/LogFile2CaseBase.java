@@ -14,8 +14,8 @@ import org.jLOAF.sim.StateBased.KOrderedSimilarity;
 import org.jLOAF.sim.atomic.EuclideanDistance;
 import org.jLOAF.sim.complex.Mean;
 
-import AgentModules.MCAction;
-import AgentModules.MCInput;
+import AgentModules.CPAction;
+import AgentModules.CPInput;
 
 public class LogFile2CaseBase {
 	
@@ -24,8 +24,8 @@ public class LogFile2CaseBase {
 		ComplexSimilarityMetricStrategy complex_strat = new Mean();
 		StateBasedSimilarity stateBasedSim = new KOrderedSimilarity(1);
 		
-		MCInput mcinput;
-		MCAction action;
+		CPInput mcinput;
+		CPAction action;
 		
 		CaseBase cb = new CaseBase();
 		
@@ -34,13 +34,13 @@ public class LogFile2CaseBase {
 		String [] input = new String [3];
 		System.out.println("Creating casebase...");
 		while ((Line = br.readLine()) != null){
-			mcinput = new MCInput("Observation",complex_strat);
+			mcinput = new CPInput("Observation",complex_strat);
 			
 			input = Line.split(",");
 			
 			mcinput.add(new AtomicInput("position",new Feature(Double.parseDouble(input[0])),Atomic_strat));
 			mcinput.add(new AtomicInput("velocity",new Feature(Double.parseDouble(input[0])),Atomic_strat));
-			action = new MCAction(input[2]);
+			action = new CPAction(input[2]);
 			
 			cb.createThenAdd(mcinput, action, stateBasedSim);	
 		}
