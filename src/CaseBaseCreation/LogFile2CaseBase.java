@@ -31,7 +31,7 @@ public class LogFile2CaseBase {
 		
 		BufferedReader br = new BufferedReader(new FileReader(logfile),'r');
 		String Line;
-		String [] input = new String [3];
+		String [] input = new String [5];
 		System.out.println("Creating casebase...");
 		while ((Line = br.readLine()) != null){
 			mcinput = new CPInput("Observation",complex_strat);
@@ -39,8 +39,10 @@ public class LogFile2CaseBase {
 			input = Line.split(",");
 			
 			mcinput.add(new AtomicInput("position",new Feature(Double.parseDouble(input[0])),Atomic_strat));
-			mcinput.add(new AtomicInput("velocity",new Feature(Double.parseDouble(input[0])),Atomic_strat));
-			action = new CPAction(input[2]);
+			mcinput.add(new AtomicInput("velocity",new Feature(Double.parseDouble(input[1])),Atomic_strat));
+			mcinput.add(new AtomicInput("angle",new Feature(Double.parseDouble(input[2])),Atomic_strat));
+			mcinput.add(new AtomicInput("vtip",new Feature(Double.parseDouble(input[3])),Atomic_strat));
+			action = new CPAction(input[4]);
 			
 			cb.createThenAdd(mcinput, action, stateBasedSim);	
 		}
