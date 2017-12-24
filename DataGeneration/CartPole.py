@@ -9,7 +9,7 @@ from rl.agents.dqn import DQNAgent
 from rl.policy import BoltzmannQPolicy
 from rl.memory import SequentialMemory
 
-def train(env):
+def train(env, test =False):
 	'''Train a tabular q agent to learn the behavior for the required environment
 	params: env - the game environment
 	return:
@@ -35,53 +35,62 @@ def train(env):
 	memory = SequentialMemory(limit=50000, window_length=1)
 	policy = BoltzmannQPolicy()
 	dqn = DQNAgent(model=model, nb_actions=nb_actions, memory=memory, nb_steps_warmup=10,
-	               target_model_update=1e-2, policy=policy)
+				   target_model_update=1e-2, policy=policy)
 	dqn.compile(Adam(lr=1e-3), metrics=['mae'])
 
 	# Okay, now it's time to learn something! We visualize the training here for show, but this
 	# slows down training quite a lot. You can always safely abort the training prematurely using
 	# Ctrl + C.
-	dqn.fit(env, nb_steps=500000, visualize=False, verbose=1)
+	dqn.fit(env, nb_steps=100000, visualize=False, verbose=1)
 
-	dqn.test(env, nb_episodes=5, visualize=True)
+	if test:
+		dqn.test(env, nb_episodes=5, visualize=False)
 
 	return dqn
 
-def generate(agent, env, number_of_traces):
-	'''Takes a trained agent and plays the game in the given environment, and writes the expert traces to a file.
+def generate(agent, env, number_of_traces, visualize = False):
+	'''Takes a trained agent and plays the game in the given environment, and writes the expert traces to n file.
 	params: agent - trained agent
 			env - the game environment
+			number_of_traces - the number of games to run and get traces of
 	return:
 			none
 	'''
 
 	for n in range(number_of_traces):
-		filename = 'file'+n+'.txt'
+		filename = 'file'+str(n)+'.txt'
 		f = open(filename, 'w')
 
 		#need expert
-		for i_episode in range(20):
-		    observation = env.reset()
-		    for t in range(100):
-		        env.render()
-		        for i in range(len(observation)):
-		        	f.write(str(observation[i])+',')
-		        #action = env.action_space.sample()
-		        action = agent.act(observation,eps=1)
-		        f.write(str(action))
-		        f.write('\n')
-		        observation, reward, done, info = env.step(action)
-		        if done:
-		            print("Episode finished after {} timesteps".format(t+1))
-		            break
-
+		for i_episode in range(5):
+			observation = env.reset()
+			s=''
+			for t in range(200):
+				if visualize:
+					env.render()
+				for i in range(len(observation)):
+					s+=str(observation[i])
+					s+=','
+				#action = env.action_space.sample()
+				action = agent.forward(observation)
+				s+=str(action)
+				s+='\n'
+				observation, reward, done, info = env.step(action)
+				if done:
+					print("Episode finished after {} timesteps".format(t+1))
+					break
+			if t == 199:
+				print('writing to file...')
+				f.write(s)
+				print('done')
 		f.close()
 
 if __name__ == '__main__':
-	number_of_traces = 1
+	number_of_traces = 10
 	env = gym.make('CartPole-v0')
-	agent = train(env)
-	#generate(agent, env, number_of_traces)
+	agent = train(env, test = True)
+	agent.training = False
+	generate(agent, env, number_of_traces)
 
 
 
